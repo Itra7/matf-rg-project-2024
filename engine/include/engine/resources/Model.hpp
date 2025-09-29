@@ -53,6 +53,8 @@ public:
     const std::string &name() const {
         return m_name;
     }
+    int initialization_instances(const std::vector<glm::mat4> &instances);
+    int draw_instanced(const Shader* shader, const int size);
 
 private:
     /**

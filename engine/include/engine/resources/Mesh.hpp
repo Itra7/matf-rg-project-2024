@@ -39,10 +39,14 @@ public:
     */
     void draw(const Shader *shader);
 
+    int draw(const Shader *shader, const int size);
+
     /**
     * @brief Destroys the mesh in the OpenGL context.
     */
     void destroy();
+
+    int initialization_mesh_instances(const std::vector<glm::mat4> &instances);
 
 private:
     /**
