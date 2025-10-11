@@ -4,6 +4,7 @@
 
 #ifndef MAINCONTROLLER_HPP
 #define MAINCONTROLLER_HPP
+#include <chrono>
 #include <engine/core/Controller.hpp>
 #include "Utils.hpp"
 #include "../../engine/libs/assimp/contrib/rapidjson/include/rapidjson/document.h"
@@ -41,6 +42,9 @@ public:
     }
     std::vector<glm::mat4> tree1_models;
     std::vector<glm::mat4> tree2_models;
+    bool pressed = false;
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+    std::chrono::time_point<std::chrono::high_resolution_clock> current_time;
 };
 
 }

@@ -10,7 +10,6 @@
 #include "GUIController.hpp"
 #include "../../engine/libs/glfw/include/GLFW/glfw3.h"
 
-#define MAXCNUM 5
 #define POINT_LIGHT_NUM 2
 #define RADIUS 3
 #define POSITIONLAMP1 VECTOR3(2.0f, -5.0f, 1.0f)
@@ -49,25 +48,37 @@ namespace app{
     }
 
     bool MainController::loop() {
-        static int CNUM = 0;
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
+        auto dt = platform->dt();
         if (platform->key(engine::platform::KeyId::KEY_ESCAPE).is_down()) {
             return false;
         }
         if (platform->key(engine::platform::KeyId::KEY_G).is_down()) {
-            SUN_POSITION = VECTOR3(cos(glfwGetTime())*10.0f, 10.0f, 3.0+(float)sin(glfwGetTime())*7.0f);
+            SUN_POSITION = VECTOR3((float)cos(glfwGetTime())*10.0f, 10.0f, 3.0+(float)sin(glfwGetTime())*7.0f);
         }
         if (platform->key(engine::platform::KeyId::KEY_C).is_down()) {
-            if (CNUM >= MAXCNUM) {
-                return true;
-            }
-            SUN_AMBIENT += VECTOR3(0.01f, 0.01f, 0.01f);
-            SUN_DIFFUSE += VECTOR3(0.0f,0.2f,0.1f);
-            ++CNUM;
+            SUN_AMBIENT += VECTOR3(0.0f, 0.1f, 0.01f);
+            SUN_DIFFUSE += VECTOR3(0.0f,0.1f,0.01f);
         }
-        if (platform->key(engine::platform::KeyId::KEY_T).is_down()) {
-            UFO_POSITON -= VECTOR3(0.0f, -0.15f, 0.0f);
-            HOUSE_POSITION -= VECTOR3(0.0f, -0.1f, 0.0f);
+        if (platform->key(engine::platform::KeyId::KEY_T).state() == engine::platform::Key::State::JustPressed){
+            pressed = true;
+            start_time = std::chrono::high_resolution_clock::now();
+        }
+
+        if (pressed){
+            current_time = std::chrono::high_resolution_clock::now();
+            auto elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time).count();
+            if (elapsed_time >= 2 && elapsed_time <= 3) {
+                UFO_POSITON += VECTOR3(0.0f, 0.15f, 0.0f);
+                HOUSE_POSITION += VECTOR3(0.0f, 0.15f, 0.0f);
+            }
+
+            if (elapsed_time >= 6) {
+                UFO_POSITON += VECTOR3(0.0f, 10000.15f, 0.0f);
+                HOUSE_POSITION += VECTOR3(0.0f, 10000.15f, 0.0f);
+                pressed = false;
+            }
+
         }
         return true;
     }
@@ -94,7 +105,6 @@ namespace app{
         engine::resources::Shader *shader = resources->shader("kuca2");
         shader->use();
         set_shader(shader, graphics, "HOUSE");
-
         kuca->draw(shader);
     }
 
@@ -110,24 +120,22 @@ namespace app{
 
         if (tree1_models.empty()) {
             float y = TREE1POSITION.y;
-            /*
-             * x_i = RADIUS*cos(2pi*i/n)
-             * y_i = RADIUS*sin(2pi*i/n)
-             */
             for (int i = 0; i < 30; i++) {
-                float x = 10.0 * sin((2*M_PI*i)/(instanced/2));
-                float z = 10.0 * cos((2*M_PI*i)/(instanced/2));
+                float angle = (2*M_PI*i)/(instanced/2);
+                float x = 10.0 * sin(angle);
+                float z = 10.0 * cos(angle);
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(x, y, z));
                 model = glm::scale(model, glm::vec3(0.6f));
                 tree1_models.push_back(model);
             }
             for (int i = 0; i < 30; i++) {
-                float x = 16.0 * sin((2*M_PI*i)/(instanced/2));
-                float z = 16.0 * cos((2*M_PI*i)/(instanced/2));
+                float angle = (2*M_PI*i)/(instanced/2);
+                float x = 17.5 * sin(angle);
+                float z = 17.5 * cos(angle);
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(x, y, z));
-                model = glm::scale(model, glm::vec3(0.6f));
+                model = glm::scale(model, glm::vec3(0.9f));
                 tree1_models.push_back(model);
             }
         }
@@ -152,24 +160,22 @@ namespace app{
 
         if (tree2_models.empty()) {
             float y = TREE1POSITION.y;
-            /*
-             * x_i = RADIUS*cos(2pi*i/n)
-             * y_i = RADIUS*sin(2pi*i/n)
-             */
             for (int i = 0; i < 30; i++) {
-                float x = 13.0 * sin((2*M_PI*i)/(instanced/2));
-                float z = 13.0 * cos((2*M_PI*i)/(instanced/2));
+                float angle = (2*M_PI*i)/(instanced/2);
+                float x = 14.0 * sin(angle);
+                float z = 14.0 * cos(angle);
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(x, y, z));
                 model = glm::scale(model, glm::vec3(1.6f));
                 tree2_models.push_back(model);
             }
             for (int i = 0; i < 30; i++) {
-                float x = 19.0 * sin((2*M_PI*i)/(instanced/2));
-                float z = 19.0 * cos((2*M_PI*i)/(instanced/2));
+                float angle = (2*M_PI*i)/(instanced/2);
+                float x = 21.5 * sin(angle);
+                float z = 21.5 * cos(angle);
                 glm::mat4 model = glm::mat4(1.0f);
                 model = glm::translate(model, glm::vec3(x, y, z));
-                model = glm::scale(model, glm::vec3(1.4f));
+                model = glm::scale(model, glm::vec3(1.8f));
                 tree2_models.push_back(model);
             }
         }
@@ -267,7 +273,6 @@ namespace app{
         draw_house();
         draw_ufo();
         draw_lamp();
-        //draw_skyboxes();
     }
     void MainController::end_draw() {
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
@@ -280,7 +285,6 @@ namespace app{
 void set_shader(engine::resources::Shader *shader, engine::graphics::GraphicsController* graphics, const char* IDENTIFIER) {
     shader->set_mat4("projection", graphics->projection_matrix());
     shader->set_mat4("view", graphics->camera()->view_matrix());
-
     if (IDENTIFIER == "HOUSE") {
         shader->set_vec3("dirLight.direction", SUN_POSITION);
         shader->set_float("material.shininess", 32);
@@ -289,7 +293,6 @@ void set_shader(engine::resources::Shader *shader, engine::graphics::GraphicsCon
         shader->set_vec3("dirLight.specular", VECTOR3(1.0f, 1.0f, 1.0f));
         for (int i = 0; i < POINT_LIGHT_NUM; i++) {
             std::string s = "pointLights[" + std::to_string(i) + "].";
-
             shader->set_vec3(s + "position", POSITIONLAMPS[i]);
             shader->set_float(s + "constant", 1.0f);
             shader->set_float(s + "linear", 0.09f);
@@ -313,10 +316,8 @@ void set_shader(engine::resources::Shader *shader, engine::graphics::GraphicsCon
         shader->set_vec3("dirLight.ambient", SUN_AMBIENT);
         shader->set_vec3("dirLight.diffuse", SUN_DIFFUSE);
         shader->set_vec3("dirLight.specular", VECTOR3(1.0f, 1.0f, 1.0f));
-
         for (int i = 0; i < POINT_LIGHT_NUM; i++) {
             std::string s = "pointLights[" + std::to_string(i) + "].";
-
             shader->set_vec3(s + "position", POSITIONLAMPS[i]);
             shader->set_float(s + "constant", 1.0f);
             shader->set_float(s + "linear", 0.09f);
@@ -338,7 +339,6 @@ void set_shader(engine::resources::Shader *shader, engine::graphics::GraphicsCon
 
         for (int i = 0; i < POINT_LIGHT_NUM; i++) {
             std::string s = "pointLights[" + std::to_string(i) + "].";
-
             shader->set_vec3(s + "position", POSITIONLAMPS[i]);
             shader->set_float(s + "constant", 1.0f);
             shader->set_float(s + "linear", 0.09f);
@@ -350,7 +350,6 @@ void set_shader(engine::resources::Shader *shader, engine::graphics::GraphicsCon
     }else if (IDENTIFIER == "TREE") {
         shader->set_vec3("dirLight.direction", SUN_POSITION);
         shader->set_float("material.shininess", 32);
-
         shader->set_vec3("dirLight.ambient", SUN_AMBIENT);
         shader->set_vec3("dirLight.diffuse", SUN_DIFFUSE);
         shader->set_vec3("dirLight.specular", VECTOR3(1.0f, 1.0f, 1.0f));
@@ -368,12 +367,3 @@ void set_shader(engine::resources::Shader *shader, engine::graphics::GraphicsCon
         }
     }
 };
-
-
-/*
- *TODO:
- *dodaj da se pokupi kuca na slovo c npr
- *i nlo se dize gore i lampe
- *drvo ne mora
- *INSTANCING dodaj samo one komete iz learnopengl sajta
- */

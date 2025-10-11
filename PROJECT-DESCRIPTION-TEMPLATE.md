@@ -16,7 +16,7 @@
 
 [X] Model with lighting
 [X] Two types of lighting with customizable colors and movement through GUI or ACTIONS
-[X] {ACTION_X} --- AFTER_M_SECONDS---Triggers---> {EVENT_A} ---> AFTER_N_SECONDS---Triggers---> {EVENT_B}
+[X] {ACTION_T} --- AFTER_2_SECONDS---Triggers---> {NLO_UVLACI} ---> AFTER_3_SECONDS---Triggers---> {NLO ODVUCE KUCU}
 
 ### Group A:
 
