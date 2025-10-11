@@ -48,6 +48,7 @@ namespace app{
     }
 
     bool MainController::loop() {
+        static int lock = 0;
         auto platform = engine::core::Controller::get<engine::platform::PlatformController>();
         auto dt = platform->dt();
         if (platform->key(engine::platform::KeyId::KEY_ESCAPE).is_down()) {
@@ -57,8 +58,11 @@ namespace app{
             SUN_POSITION = VECTOR3((float)cos(glfwGetTime())*10.0f, 10.0f, 3.0+(float)sin(glfwGetTime())*7.0f);
         }
         if (platform->key(engine::platform::KeyId::KEY_C).is_down()) {
-            SUN_AMBIENT += VECTOR3(0.0f, 0.1f, 0.01f);
-            SUN_DIFFUSE += VECTOR3(0.0f,0.1f,0.01f);
+            if (lock <= 7) {
+                SUN_AMBIENT += VECTOR3(0.0f, 0.09f, 0.001f);
+                SUN_DIFFUSE += VECTOR3(0.0f,0.09f,0.001f);
+                lock++;
+            }
         }
         if (platform->key(engine::platform::KeyId::KEY_T).state() == engine::platform::Key::State::JustPressed){
             pressed = true;
