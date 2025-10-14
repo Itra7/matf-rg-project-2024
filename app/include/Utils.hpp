@@ -9,6 +9,7 @@
 #include <engine/graphics/OpenGL.hpp>
 #include <engine/platform/PlatformController.hpp>
 #include <engine/resources/ResourcesController.hpp>
+#include "../../engine/libs/glfw/include/GLFW/glfw3.h"
 
 #include <MainController.hpp>
 

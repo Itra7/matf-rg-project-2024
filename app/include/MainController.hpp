@@ -9,6 +9,11 @@
 #include "Utils.hpp"
 #include "../../engine/libs/assimp/contrib/rapidjson/include/rapidjson/document.h"
 
+#define POSITIONLAMP1 VECTOR3(2.0f, -5.0f, 1.0f)
+#define POSITIONLAMP2 VECTOR3(-0.5f, -5.0f, 1.0f)
+#define TREE1POSITION VECTOR3(0.0f, -4.6f, 10.0f)
+
+
 namespace app {
 
 class MainController : public engine::core::Controller {
