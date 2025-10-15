@@ -11,9 +11,22 @@ void Model::draw(const Shader *shader) {
     }
 }
 
-void Model::destroy() {
-    for (auto &mesh: m_meshes) {
-        mesh.destroy();
+    void Model::initialize_instances(const std::vector<glm::mat4> &instances) {
+        for (auto &mesh: m_meshes) {
+            mesh.initialization_mesh_instances(instances);
+        }
     }
-}
+
+    void Model::draw_instanced(const Shader *shader, const int size) {
+        shader->use();
+        for (auto &mesh : m_meshes) {
+            mesh.draw_instanced(shader, size);
+        }
+    }
+
+    void Model::destroy() {
+        for (auto &mesh: m_meshes) {
+            mesh.destroy();
+        }
+    }
 }

@@ -1,11 +1,32 @@
 {
   "resources": {
     "models": {
+      "ground": {
+        "path" : "ground/Floor.obj"
+      },
+      "ufo": {
+        "path": "ufo/nlo.obj"
+      },
+      "kuca2": {
+        "path": "kuca2/Manor.obj"
+      },
+      "tree1": {
+        "path": "tree1/Tree.obj"
+      },
+      "tree2": {
+        "path": "tree2/Tree.obj"
+      },
+      "Sun": {
+        "path": "Sun/Sun.obj"
+      },
+      "lamp": {
+        "path": "lamp/streetlamp.obj"
+      }
     }
   },
   "window": {
-    "height": 600,
+    "height": 1000,
     "title": "Hello, window!",
-    "width": 800
+    "width": 1200
   }
 }
